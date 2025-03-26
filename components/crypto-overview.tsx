@@ -1,13 +1,15 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useStockData } from "@/lib/data-service"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useStockData } from "@/lib/data-service";
+import { TrendingUp, TrendingDown } from "lucide-react";
 
 export function CryptoOverview() {
-  const { filteredData } = useStockData()
-  const [cryptoData, setCryptoData] = useState<{ name: string; price: number; change: number }[]>([])
+  const { filteredData } = useStockData();
+  const [cryptoData, setCryptoData] = useState<
+    { name: string; price: number; change: number }[]
+  >([]);
 
   useEffect(() => {
     if (filteredData.length) {
@@ -15,28 +17,32 @@ export function CryptoOverview() {
       const cryptoAssets = [
         { field: "Bitcoin_Price", name: "Bitcoin" },
         { field: "Ethereum_Price", name: "Ethereum" },
-      ]
+      ];
 
       // Calculate data for each crypto
       const data = cryptoAssets.map((crypto) => {
-        const firstValue = Number.parseFloat(filteredData[0][crypto.field])
-        const lastValue = Number.parseFloat(filteredData[filteredData.length - 1][crypto.field])
+        const firstValue = Number.parseFloat(filteredData[0][crypto.field]);
+        const lastValue = Number.parseFloat(
+          filteredData[filteredData.length - 1][crypto.field]
+        );
         const change =
-          firstValue && !isNaN(firstValue) && !isNaN(lastValue) ? ((lastValue - firstValue) / firstValue) * 100 : 0
+          firstValue && !isNaN(firstValue) && !isNaN(lastValue)
+            ? ((firstValue - lastValue) / lastValue) * 100
+            : 0;
 
         return {
           name: crypto.name,
-          price: lastValue,
+          price: firstValue,
           change,
-        }
-      })
+        };
+      });
 
       // Sort by change (best performers first)
-      const sortedData = data.sort((a, b) => b.change - a.change)
+      const sortedData = data.sort((a, b) => b.change - a.change);
 
-      setCryptoData(sortedData)
+      setCryptoData(sortedData);
     }
-  }, [filteredData])
+  }, [filteredData]);
 
   if (!cryptoData.length) {
     return (
@@ -53,7 +59,7 @@ export function CryptoOverview() {
           </Card>
         ))}
       </>
-    )
+    );
   }
 
   return (
@@ -69,8 +75,14 @@ export function CryptoOverview() {
             )}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${crypto.price.toLocaleString()}</div>
-            <p className={`text-xs ${crypto.change >= 0 ? "text-green-500" : "text-red-500"}`}>
+            <div className="text-2xl font-bold">
+              ${crypto.price.toLocaleString()}
+            </div>
+            <p
+              className={`text-xs ${
+                crypto.change >= 0 ? "text-green-500" : "text-red-500"
+              }`}
+            >
               {crypto.change >= 0 ? "+" : ""}
               {crypto.change.toFixed(2)}%
             </p>
@@ -78,6 +90,5 @@ export function CryptoOverview() {
         </Card>
       ))}
     </>
-  )
+  );
 }
-

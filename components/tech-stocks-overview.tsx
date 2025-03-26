@@ -1,13 +1,15 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useStockData } from "@/lib/data-service"
-import { TrendingUp, TrendingDown } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useStockData } from "@/lib/data-service";
+import { TrendingUp, TrendingDown } from "lucide-react";
 
 export function TechStocksOverview() {
-  const { filteredData } = useStockData()
-  const [techData, setTechData] = useState<{ name: string; price: number; change: number }[]>([])
+  const { filteredData } = useStockData();
+  const [techData, setTechData] = useState<
+    { name: string; price: number; change: number }[]
+  >([]);
 
   useEffect(() => {
     if (filteredData.length) {
@@ -21,28 +23,32 @@ export function TechStocksOverview() {
         { field: "Meta_Price", name: "Meta" },
         { field: "Netflix_Price", name: "Netflix" },
         { field: "Tesla_Price", name: "Tesla" },
-      ]
+      ];
 
       // Calculate data for each tech stock
       const data = techStocks.map((stock) => {
-        const firstValue = Number.parseFloat(filteredData[0][stock.field])
-        const lastValue = Number.parseFloat(filteredData[filteredData.length - 1][stock.field])
+        const firstValue = Number.parseFloat(filteredData[0][stock.field]);
+        const lastValue = Number.parseFloat(
+          filteredData[filteredData.length - 1][stock.field]
+        );
         const change =
-          firstValue && !isNaN(firstValue) && !isNaN(lastValue) ? ((lastValue - firstValue) / firstValue) * 100 : 0
+          firstValue && !isNaN(firstValue) && !isNaN(lastValue)
+            ? ((firstValue - lastValue) / lastValue) * 100
+            : 0;
 
         return {
           name: stock.name,
-          price: lastValue,
+          price: firstValue,
           change,
-        }
-      })
+        };
+      });
 
       // Sort by change (best performers first)
-      const sortedData = data.sort((a, b) => b.change - a.change).slice(0, 4)
+      const sortedData = data.sort((a, b) => b.change - a.change).slice(0, 4);
 
-      setTechData(sortedData)
+      setTechData(sortedData);
     }
-  }, [filteredData])
+  }, [filteredData]);
 
   if (!techData.length) {
     return (
@@ -59,7 +65,7 @@ export function TechStocksOverview() {
           </Card>
         ))}
       </>
-    )
+    );
   }
 
   return (
@@ -75,8 +81,14 @@ export function TechStocksOverview() {
             )}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${stock.price.toLocaleString()}</div>
-            <p className={`text-xs ${stock.change >= 0 ? "text-green-500" : "text-red-500"}`}>
+            <div className="text-2xl font-bold">
+              ${stock.price.toLocaleString()}
+            </div>
+            <p
+              className={`text-xs ${
+                stock.change >= 0 ? "text-green-500" : "text-red-500"
+              }`}
+            >
               {stock.change >= 0 ? "+" : ""}
               {stock.change.toFixed(2)}%
             </p>
@@ -84,6 +96,5 @@ export function TechStocksOverview() {
         </Card>
       ))}
     </>
-  )
+  );
 }
-

@@ -98,3 +98,59 @@
   }
 }
 
+/* Date Range Picker Custom Styles */
+.rdp-day_range_start:not(.rdp-day_range_end) {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.rdp-day_range_end:not(.rdp-day_range_start) {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.rdp-day_range_middle {
+  border-radius: 0 !important;
+  background-color: hsl(var(--primary) / 0.1) !important;
+  color: hsl(var(--primary)) !important;
+}
+
+.rdp-day_today:not(.rdp-day_selected) {
+  font-weight: bold;
+  color: hsl(var(--primary));
+}
+
+.rdp-head_cell {
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: hsl(var(--muted-foreground)) !important;
+  padding: 0.5rem 0 !important;
+}
+
+.rdp-caption {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  align-items: center;
+}
+
+.rdp-multiple_months .rdp-caption {
+  position: relative;
+  padding: 0.75rem 0.5rem;
+}
+
+.rdp-nav {
+  white-space: nowrap;
+}
+
+.rdp-button_next {
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.rdp-button_previous {
+  background-color: white;
+  border-radius: 1rem;
+}
